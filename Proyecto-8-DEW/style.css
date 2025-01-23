@@ -1,0 +1,102 @@
+body {
+    padding-top: 10px;
+    background-image: url(./images/Fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-items: center;
+}
+
+input + p{
+    font-family: arial;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 10px;
+    color: red;
+    opacity: 0;
+    height: 0;
+}
+input.invalid + p{
+    opacity: 1;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.form {
+    display: block;
+    flex-direction: column;
+    gap: 10px;
+    max-width: auto;
+    border: 2px solid white;
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 20px;
+    position: relative;
+}
+
+.titulo {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 2em;
+    color:azure;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    padding: 0 10px;
+}
+
+input {
+    display: block;
+    padding: 8px 16px;
+    font-size: 1em; /* Cambiado a un tamaño de fuente más pequeño */
+    margin: 10px auto;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 3px solid #ccc;
+    outline: none !important;
+}
+
+.inline-inputs {
+    display: flex;
+    gap: 10px; /* Espacio entre los inputs en línea */
+}
+
+.inline-inputs input {
+    flex: 1; /* Hacer que ambos inputs ocupen el mismo espacio */
+}
+
+input.valid {
+    border-color: #00ff00;
+}
+
+input.invalid {
+    border-color: rgb(255, 0, 0);
+}
+
+
+.botones{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+}
+
+.boton1, .boton2, .boton3, .boton4, .boton5 {
+    color: white;
+    background: linear-gradient(to bottom right, #ff9500, #ff4500);
+    border: transparent;
+    border-radius: 10px;
+    width: 120px;
+    height: auto;
+    padding: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out; /* Suaviza las transiciones */
+}
+
+.boton1:hover, .boton2:hover, .boton3:hover, .boton4:hover, .boton5:hover {
+    background: linear-gradient(to bottom right, #ff4500, #ff9500); 
+    transform: scale(1.1); 
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}

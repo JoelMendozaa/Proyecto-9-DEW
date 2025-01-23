@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    text-align: center; /* Centra el texto del cuerpo */
+}
+
+.images {
+    display: flex; /* Permite tener las imágenes una al lado de otra */
+    justify-content: center; /* Alinea las imágenes en el centro */
+    align-items: center;
+}
+
+.images img {
+    width: 200px;
+    object-fit: contain; /* Mantiene la proporción original de la imagen */
+    height: auto;
+    margin-top: 10px;
+    margin-right: 30px;
+}
+
+.header {
+    background-color: lightblue;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.seat {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    margin: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.seat-container {
+    display: flex;
+    flex-direction: column; /* Asegura que la tabla se alinee verticalmente */
+    align-items: center; /* Centra la tabla horizontalmente */
+    margin-top: 20px; /* Espacio superior para separar de otros elementos */
+}
+
+table {
+    border-collapse: separate; /* Separa las celdas */
+    border-spacing: 5px; /* Espaciado entre las celdas de la tabla */
+    margin: 0 auto; /* Centra la tabla en el contenedor */
+    background-color: white; /* Fondo blanco para la tabla */
+}
+
+.fila-naranja {
+    background-color: orange;
+}
+
+.fila-azul {
+    background-color: rgb(0, 141, 235);
+}
+
+.red {
+    background-color: red; /* Color rojo para asientos ocupados */
+}
+
+.tabla {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    border: 1px solid black;
+    margin-left: 20px; /* Margen izquierdo para separar de otros elementos */
+}
+
+.boton-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.botonReserva {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #0eb3ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.botonReserva:hover {
+    background-color: #0cb1e3; /* Color de fondo al pasar el ratón */
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Formulario</title>
+</head>
+<body>
+    <form class="form" autocomplete="on">
+        <h1 class="titulo">Formulario</h1>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+        <p>Debe empezar por mayúscula</p>
+
+        <input type="text" id="apellido" name="apellidos" placeholder="Apellidos" required>
+        <p>Debe empezar por mayúscula</p>
+
+        <div class="inline-inputs">
+            <input type="text" id="dni" name="dni" placeholder="DNI/NIE" required>
+            <p>Deben tener entre 1 y 8 dígitos y terminar en una letra</p>
+
+            <input type="text" id="nacimiento" name="fechaNacimiento" placeholder="Fecha nacimiento" required>
+            <p>Formato: DD/MM/YYYY</p>
+        </div>
+
+        <input type="text" id="cp" name="codigoPostal" placeholder="Código Postal" required>
+        <p>Debe ser un número de 5 dígitos</p>
+
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <p>Debe ser un correo electrónico válido</p>
+
+        <input type="tel" id="fijo" name="telFijo" placeholder="Teléfono fijo" required>
+        <p>Debe ser un número de 9 dígitos</p>
+
+        <input type="tel" id="movil" name="telMovil" placeholder="Teléfono móvil" required>
+        <p>Debe ser un número de 9 dígitos y ser un número de teléfono español</p>
+
+        <input type="text" id="iban" name="iban" placeholder="IBAN" requiredmaxlength="24">
+        <p>Debe empezar por dos letras seguido de números y letras</p>
+
+        <input type="text" id="tarjeta" name="tarjetaCredito" placeholder="Tarjeta de crédito" required>
+        <p>Debe ser un número de 16 dígitos con espacios o guiones cada 4</p>
+
+        <input type="password" id="passwd" name="password" placeholder="Contraseña" required>
+        <p>Debe tener al menos 12 caracteres, una letra, un número y un caracter especial</p>
+
+        <input type="password" id="confirmar" name="confirmarPassword" placeholder="Confirmar contraseña" required>
+        <p>Debe ser igual a la contraseña anterior</p>
+
+        <div class="botones">
+            <button class="boton1" type="button" id="cargarJson">Cargar desde JSON</button>
+            <button class="boton2" type="button" id="pubPhp">Publicar en PHP</button>
+            <button class="boton3" type="button" id="cargarPhp">Cargar desde PHP</button>
+            <button class="boton4" type="button" id="pubBbdd">Publicar BBDD</button>
+            <button class="boton5" type="button" id="cargarBbdd">Cargar BBDD</button>
+        </div>
+    </form>
+    <script src="code.js"></script>
+</body>
+</html>
