@@ -64,7 +64,7 @@ $(document).ready(function () {
     function publicarPhp() {
         const formData = $('.form').serialize();
 
-        $.post('http://zonzamas.lan/publicar_php.php', formData)
+        $.post('http://www.proyecto8dew.com/publicar_php.php', formData)
             .done(function (response) {
                 console.log('Respuesta servidor: ', response);
                 if (response.message === "Datos guardados correctamente") {
@@ -82,7 +82,7 @@ $(document).ready(function () {
     }
 
     function obtenerDatosPhp() {
-        $.get('http://zonzamas.lan/get_php.php')
+        $.get('http://www.proyecto8dew.com/get_php.php')
             .done(function (data) {
                 if (data.message === "Datos recuperados correctamente") {
                     rellenarFormulario(data.data);
@@ -98,7 +98,7 @@ $(document).ready(function () {
     function publicarBbdd() {
         const formData = $('.form').serialize();
 
-        $.post('http://zonzamas.lan/publicar_mysql.php', formData)
+        $.post('http://www.proyecto8dew.com/publicar_mysql.php', formData)
             .done(function (response) {
                 console.log('Respuesta del servidor: ', response);
                 try {
@@ -124,7 +124,7 @@ $(document).ready(function () {
             return;
         }
 
-        $.get(`http://zonzamas.lan/obtener_mysql.php?dni=${dni}`)
+        $.get(`http://www.proyecto8dew.com/obtener_mysql.php?dni=${dni}`)
             .done(function (data) {
                 if (data.success === false) {
                     alert("No se encontraron datos para el DNI proporcionado.");

@@ -67,13 +67,19 @@ $(document).ready(function () {
             { width: 150, alt: "Disco2" },
             { width: 100, alt: "Disco1" }
         ];
-        discos.forEach(discoData => {
+        discos.forEach((discoData, index) => {
             $("<img>")
                 .attr("src", "./imagenes/Disco.png")
                 .attr("alt", discoData.alt)
                 .attr("width", discoData.width)
                 .attr("height", 50)
                 .addClass("disk")
+                .css({
+                    position: "absolute",
+                    bottom: index * 55 + "px",
+                    left: "50%",
+                    transform: "translateX(-50%)"
+                })
                 .appendTo($torre1);
         });
 
@@ -109,7 +115,7 @@ $(document).ready(function () {
         }
     }
 
-    // Función para mover un disco
+    // Función para mover un disco con animación
     function moverDisco($torreOrigen, $torreDestino) {
         if (!juegoIniciado) {
             mostrarMensaje("Presiona INICIO para comenzar el juego");
@@ -129,17 +135,33 @@ $(document).ready(function () {
             return;
         }
 
-        $discoAMover.css("bottom", $torreDestino.children().length * 55);
-        $torreDestino.append($discoAMover);
-        movimientosTotales++;
-        actualizarContador();
+        // Calcular altura destino
+        const destinoAltura = $torreDestino.children().length * 55;
 
-        if ($torre3.children().length === 3) {
-            mostrarMensaje(`¡Felicidades! Has completado el juego en ${movimientosTotales} movimientos.`);
-            detener();
-        } else {
-            mostrarMensaje("Movimiento válido");
-        }
+        // Animar disco
+        $discoAMover.animate({
+            bottom: "+=60px"
+        }, 300).animate({
+            left: $torreDestino.position().left - $torreOrigen.position().left
+        }, 500).animate({
+            bottom: destinoAltura + "px"
+        }, 300, function () {
+            $torreDestino.append($discoAMover.css({
+                bottom: destinoAltura + "px",
+                left: "50%",
+                transform: "translateX(-50%)"
+            }));
+
+            movimientosTotales++;
+            actualizarContador();
+
+            if ($torre3.children().length === 3) {
+                mostrarMensaje(`¡Felicidades! Has completado el juego en ${movimientosTotales} movimientos.`);
+                detener();
+            } else {
+                mostrarMensaje("Movimiento válido");
+            }
+        });
     }
 
     // Función para actualizar el contador
