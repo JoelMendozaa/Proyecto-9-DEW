@@ -52,7 +52,7 @@ function rellenarFormulario(data) {
 }
 
 function obtenerDatosJson() {
-    $.getJSON('http://192.168.1.117/proyecto9dew/Proyecto-8-DEW/usuario.json', function(data) {
+    $.getJSON('http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/usuario.json', function(data) {
         // Asignar valores dinámicamente y validar
         $('#nombre').val(data.nombre || '');
         $('#apellido').val(data.apellidos || '');
@@ -94,7 +94,7 @@ function publicarPhp() {
     });
 
     $.ajax({
-        url: 'http://192.168.1.117/proyecto9dew.com/Proyecto-8-DEW/publicar_php.php',
+        url: 'http://192.168.216.110/proyecto9dew.com/Proyecto-8-DEW/publicar_php.php',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(formData),
@@ -123,7 +123,7 @@ function publicarPhp() {
 // Función para obtener los datos guardados (GET)
 function obtenerDatosPhp() {
     $.ajax({
-        url: 'http://192.168.1.117/proyecto9dew.com/Proyecto-8-DEW/get_php.php',
+        url: 'http://192.168.216.110/proyecto9dew.com/Proyecto-8-DEW/get_php.php',
         method: 'GET',
         success: function(data) {
             if (data.message === "Datos recuperados correctamente") {
@@ -173,7 +173,7 @@ function publicarBbdd() {
     });
 
     $.ajax({
-        url: 'http://192.168.1.117/proyecto9dew.com/Proyecto-8-DEW/publicar_mysql.php',
+        url: 'http://192.168.216.110/proyecto9dew.com/Proyecto-8-DEW/publicar_mysql.php',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(formData),
@@ -201,7 +201,7 @@ function obtenerBbdd() {
     }
 
     $.ajax({
-        url: `http://192.168.1.117/proyecto9dew.com/Proyecto-8-DEW/obtener_mysql.php?dni=${dni}`,
+        url: `http://192.168.216.110/proyecto9dew.com/Proyecto-8-DEW/obtener_mysql.php?dni=${dni}`,
         method: 'GET',
         success: function(data) {
             console.log('Datos recibidos:', data);
