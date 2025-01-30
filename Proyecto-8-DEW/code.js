@@ -1,106 +1,149 @@
-$(document).ready(function () {
+$(document).ready(function() {
     const patterns = {
-        nombre: /^[A-Z][a-zA-ZáéíóúÁÉÍÓÚÑñ]+$/i,
-        apellidos: /^[A-Z][a-záéíóúÁÉÍÓÚÑñ]+$/i,
+        nombre: /^[A-Z][a-zA-ZáéíóúÁÉÍÓÚÑñ]+$/i, 
+        apellido: /^[A-Z][a-záéíóúÁÉÍÓÚÑñ]+$/i,
         dni: /^[A-Z0-9]{1,8}[A-Z]$/i,
-        fechaNacimiento: /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+        anioPublicacion: /^(19|20)\d{2}$/, // Año de publicación válido (1900-2099)
         codigoPostal: /^\d{5}$/,
         email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         telFijo: /^\d{9}$/,
         telMovil: /^(\+34|34)?\d{9}$/,
-        iban: /^[A-Z]{2}\d{2}[A-Z0-9]{4,24}$/,
-        tarjetaCredito: /^(?:\d{4}[- ]?){3}\d{4}$/,
+        isbn: /^(97(8|9))?\d{9}(\d|X)$/, // ISBN válido
         password: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}$/,
         confirmarPassword: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{12,}$/
     };
 
-    // Eventos para los botones
-    $('#cargarJson').on('click', obtenerDatosJson);
-    $('#pubPhp').on('click', publicarPhp);
-    $('#cargarPhp').on('click', obtenerDatosPhp);
-    $('#pubBbdd').on('click', publicarBbdd);
-    $('#cargarBbdd').on('click', obtenerBbdd);
+    // Manejo de eventos de botones
+    $('#cargarJson').click(obtenerDatosJson);
+    $('#pubPhp').click(publicarPhp);
+    $('#cargarPhp').click(obtenerDatosPhp);
+    $('#pubBbdd').click(publicarBbdd);
+    $('#cargarBbdd').click(obtenerBbdd);
 
     // Validación de campos en tiempo real
-    $('.form input').on('input', function () {
-        const pattern = patterns[$(this).attr('name')];
-        if (pattern && pattern.test($(this).val())) {
-            $(this).removeClass('invalid').addClass('valid');
-        } else {
-            $(this).removeClass('valid').addClass('invalid');
+    $('.form input').on('input', function() {
+        const fieldName = $(this).attr('name');
+        const regex = patterns[fieldName];
+
+        if (regex) {
+            validar($(this), regex);
+        }
+
+        if (fieldName === "confirmarPassword" || fieldName === "password") {
+            validarContrasenaRepetida();
         }
     });
 
-    function validate(field, regex) {
-        if (regex.test($(field).val())) {
-            $(field).removeClass('invalid').addClass('valid');
+    function validar(field, regex) {
+        if (regex.test(field.val())) {
+            field.removeClass('invalid').addClass('valid');
         } else {
-            $(field).removeClass('valid').addClass('invalid');
+            field.removeClass('valid').addClass('invalid');
         }
     }
 
-    // Función para rellenar el formulario con los datos
+    function validarContrasenaRepetida() {
+        const password = $('input[name="password"]');
+        const repeatedPassword = $('input[name="confirmarPassword"]');
+
+        if (password.val() === repeatedPassword.val() && patterns.password.test(password.val())) {
+            repeatedPassword.removeClass('invalid').addClass('valid');
+        } else {
+            repeatedPassword.removeClass('valid').addClass('invalid');
+        }
+    }
+
     function rellenarFormulario(data) {
-        $('.form input').each(function () {
+        $('input').each(function() {
             const fieldName = $(this).attr('name');
             if (data[fieldName]) {
                 $(this).val(data[fieldName]);
-                const pattern = patterns[fieldName];
-                if (pattern) validate(this, pattern);
             }
         });
     }
 
     function obtenerDatosJson() {
-        $.getJSON('usuario.json')
-            .done(function (data) {
-                rellenarFormulario(data);
-            })
-            .fail(function (error) {
-                console.error('Error: ', error);
-            });
+        $.ajax({
+            url: 'http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/datos.json',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                const fields = {
+                    nombre: data.nombre,
+                    apellido: data.apellido,
+                    dni: data.dni,
+                    anioPublicacion: data.anioPublicacion,
+                    codigoPostal: data.cp,
+                    email: data.correo,
+                    telFijo: data.fijo,
+                    telMovil: data.movil,
+                    isbn: data.isbn,
+                    password: data.contrasena,
+                    confirmarPassword: data.contrasena
+                };
+
+                $.each(fields, function(key, value) {
+                    $('#' + key).val(value);
+                    validar($('#' + key), patterns[key]);
+                });
+            },
+            error: function(error) {
+                console.error('Error al cargar datos JSON: ', error);
+            }
+        });
     }
 
     function publicarPhp() {
-        const formData = $('.form').serialize();
+        const formData = new FormData($('.form')[0]);
 
-        $.post('http://www.proyecto8dew.com/publicar_php.php', formData)
-            .done(function (response) {
-                console.log('Respuesta servidor: ', response);
-                if (response.message === "Datos guardados correctamente") {
+        $.ajax({
+            url: 'http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/publicar_php.php',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data.message === "Datos guardados correctamente") {
                     $('.form input').val('');
-                    $('.form').hide();
-
-                    setTimeout(() => {
+                    setTimeout(function() {
                         obtenerDatosPhp();
                     }, 2000);
                 }
-            })
-            .fail(function (error) {
-                console.error('Error: ', error);
-            });
+            },
+            error: function(error) {
+                console.error('Error al publicar PHP: ', error);
+            }
+        });
     }
 
     function obtenerDatosPhp() {
-        $.get('http://www.proyecto8dew.com/get_php.php')
-            .done(function (data) {
+        $.ajax({
+            url: 'http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/get_php.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
                 if (data.message === "Datos recuperados correctamente") {
                     rellenarFormulario(data.data);
                 } else {
-                    console.error('No se encontraron datos guardados');
+                    console.error('No se encontraron datos');
                 }
-            })
-            .fail(function (error) {
-                console.error('Error: ', error);
-            });
+            },
+            error: function(error) {
+                console.error('Error al cargar datos PHP: ', error);
+            }
+        });
     }
 
     function publicarBbdd() {
-        const formData = $('.form').serialize();
+        const formData = new FormData($('.form')[0]);
 
-        $.post('http://www.proyecto8dew.com/publicar_mysql.php', formData)
-            .done(function (response) {
-                console.log('Respuesta del servidor: ', response);
+        $.ajax({
+            url: 'http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/publicar_mysql.php',
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
                 try {
                     const data = JSON.parse(response);
                     if (data.mensaje === "Los datos se han guardado correctamente en la base de datos") {
@@ -109,12 +152,13 @@ $(document).ready(function () {
                         alert("Hubo un error al guardar los datos: " + data.error);
                     }
                 } catch (e) {
-                    throw new Error('La respuesta no es un JSON válido');
+                    console.error('Error al procesar la respuesta MySQL: ', e);
                 }
-            })
-            .fail(function (error) {
-                console.error('Error: ', error);
-            });
+            },
+            error: function(error) {
+                console.error('Error al publicar MySQL: ', error);
+            }
+        });
     }
 
     function obtenerBbdd() {
@@ -124,17 +168,21 @@ $(document).ready(function () {
             return;
         }
 
-        $.get(`http://www.proyecto8dew.com/obtener_mysql.php?dni=${dni}`)
-            .done(function (data) {
+        $.ajax({
+            url: `http://192.168.216.110/proyecto9dew/Proyecto-8-DEW/obtener_mysql.php?dni=${dni}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
                 if (data.success === false) {
                     alert("No se encontraron datos para el DNI proporcionado.");
                 } else {
                     rellenarFormulario(data.data);
                 }
-            })
-            .fail(function (error) {
-                console.error('Error: ', error);
-                alert("Hubo un error al cargar los datos desde la base de datos.");
-            });
+            },
+            error: function(error) {
+                console.error('Error al cargar datos desde la base de datos: ', error);
+                alert("Hubo un error al cargar los datos.");
+            }
+        });
     }
 });
