@@ -20,16 +20,17 @@ try {
         throw new Exception("Error de conexión a la base de datos: " . $conexion->connect_error);
     }
 
+    // Recibir los datos como JSON
+    $json = file_get_contents('php://input');
+    $entrada = json_decode($json, true);
+
     // Verificar si todos los campos requeridos están presentes
     $campos_requeridos = ['dni', 'nombre', 'apellidos', 'fechaNacimiento', 'codigoPostal', 'email', 'telFijo', 'telMovil', 'iban', 'tarjetaCredito', 'password'];
     foreach ($campos_requeridos as $campo) {
-        if (!isset($_POST[$campo]) || empty($_POST[$campo])) {
+        if (!isset($entrada[$campo]) || empty($entrada[$campo])) {
             throw new Exception("El campo '$campo' es obligatorio y no puede estar vacío");
         }
     }
-
-    // Ya no se sanitiza la entrada
-    $entrada = $_POST;
 
     // Preparar la declaración SQL para insertar los datos
     $sql = "INSERT INTO usuarios (dni, nombre, apellidos, fechaNacimiento, cp, email, telFijo, telMovil, tarjeta, iban, contrasena) 
